@@ -12,7 +12,7 @@ import rx.lang.scala.Observable
 
 import scala.util.{Failure, Success, Try}
 
-abstract class SpecSuite
+trait SpecSuite
   extends Suite
     with ScalaFutures
     with BeforeAndAfterAll

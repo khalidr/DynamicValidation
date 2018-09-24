@@ -14,19 +14,29 @@ trait FoodUnitRoutes extends PlayJsonSupport {
 
   def foodUnitRoutes(foodUnitRepo: FoodUnitRepo): Route =
   {
-      pathPrefix("foodUnits") {
-      (post & entity(as[FoodUnit])) { foodUnit ⇒
-        onSuccess(foodUnitRepo.insert(foodUnit)){ _ ⇒ complete(Created) }
+
+    def getFoodUnit(id:FoodId):Directive1[FoodUnit] = onSuccess(foodUnitRepo.get(id)).flatMap{
+      case Some(f) ⇒ provide(f)
+      case None ⇒ complete(NotFound)
+    }
+
+    pathPrefix("food-units") {
+      pathEndOrSingleSlash {
+        (post & entity(as[FoodUnit])) { foodUnit ⇒
+            onSuccess(foodUnitRepo.insert(foodUnit)){ _ ⇒ complete(Created) }
+        }
       } ~
       pathPrefix(FoodIdMatcher) {foodId ⇒
-        (put & entity(as[FoodUnit])) { foodUnit =>
-          onSuccess(foodUnitRepo.upsert(foodUnit)){ _ ⇒ complete(OK) }
-        } ~
-        (get & getFoodUnit(foodId)) {
-            complete(_)
-        } ~
-        delete {
-          onSuccess(foodUnitRepo.delete(foodId)) {_ ⇒ complete(OK) }
+        pathEndOrSingleSlash {
+          (put & entity(as[FoodUnit])) { foodUnit =>
+            onSuccess(foodUnitRepo.upsert(foodUnit)){ _ ⇒ complete(OK) }
+          } ~
+          (get & getFoodUnit(foodId)) {
+              complete(_)
+          } ~
+          delete {
+            onSuccess(foodUnitRepo.delete(foodId)) {_ ⇒ complete(OK) }
+          }
         } ~
         pathPrefix("locations") {
           getFoodUnit(foodId) { foodUnit ⇒
@@ -34,24 +44,18 @@ trait FoodUnitRoutes extends PlayJsonSupport {
               val updated = foodUnit.copy(locations = foodUnit.locations :+ location)
               onSuccess(foodUnitRepo.upsert(updated)) { _ ⇒ complete(OK) }
             } ~
-            parameters ('maxResult.as[Int]){ max ⇒
-              val sorted = foodUnit.locations.sortBy(_.createdDate)(zonedDateTimeOrdering)  //normally we'd offload this sorting to the database
-              complete(sorted.take(max))
-            }
-            get { // get all locations
-              complete(foodUnit.locations)
+            parameters ('maxResult.?){
+              case Some(m) ⇒
+                val sorted = foodUnit.locations.sortBy(_.createdDate)(zonedDateTimeOrdering)  //normally we'd offload this sorting to the database
+                complete(sorted.take(m.toInt))
+
+              case None ⇒ complete(foodUnit.locations)
             }
           }
         }
-
-
       }
     }
 
-    def getFoodUnit(id:FoodId):Directive1[FoodUnit] = onSuccess(foodUnitRepo.get(id)).flatMap{
-      case Some(f) ⇒ provide(f)
-        case None ⇒ complete(NotFound)
-    }
   }
 
 

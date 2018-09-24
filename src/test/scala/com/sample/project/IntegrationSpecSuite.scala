@@ -1,6 +1,7 @@
 package com.sample.project
 
 import com.sample.project.repo.FoodUnitRepoSpec
+import com.sample.project.routes.FoodUnitRoutesSpec
 import org.scalatest.Suite
 
 class IntegrationSpecSuite extends SpecSuite {
@@ -10,5 +11,9 @@ class IntegrationSpecSuite extends SpecSuite {
     *
     * @return
     */
-  def suites: Vector[Suite] = Vector(new FoodUnitRepoSpec(bucket))
+  def suites: Vector[Suite] =
+    Vector(
+      new FoodUnitRepoSpec(bucket),
+      new FoodUnitRoutesSpec(bucket)
+    )
 }

@@ -2,7 +2,7 @@ package com.sample.project.repo
 
 import com.couchbase.client.java.AsyncBucket
 import com.couchbase.client.java.document.RawJsonDocument
-import com.sample.project.domain.{FoodId, FoodUnit, Rule, RuleId}
+import com.sample.project.domain.{FoodId, FoodUnit, FoodUnitValidation, ValidationId}
 import play.api.libs.json.{Format, Json, Reads, Writes}
 import rx.lang.scala.Observable
 
@@ -88,5 +88,7 @@ object IdWrites{
 class FoodUnitRepo(val bucket:Observable[AsyncBucket])
                   (implicit val ec:ExecutionContext, val formats:Format[FoodUnit], val idWrites: IdWrites[FoodId]) extends CouchbaseRepository [FoodId, FoodUnit]{}
 
+/*
 class RulesRepo(val bucket:Observable[AsyncBucket])
-               (implicit val ec:ExecutionContext, val formats:Format[Rule], val idWrites: IdWrites[RuleId]) extends CouchbaseRepository [RuleId, Rule]{}
+               (implicit val ec:ExecutionContext, val formats:Format[FoodUnitValidation], val idWrites: IdWrites[ValidationId]) extends CouchbaseRepository [ValidationId, FoodUnitValidation]{}
+*/

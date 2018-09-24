@@ -1,0 +1,17 @@
+{
+  "id": "somefood",
+  "validations": [
+    {
+      "targetAttribute": "/foo/bar",
+      "validation": {
+        "$gte": 1
+      }
+    },
+    {
+      "targetAttribute": "/foo/bar/baz",
+      "validation": {
+        "$eq": 1
+      }
+    }
+  ]
+}
