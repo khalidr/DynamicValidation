@@ -130,8 +130,8 @@ Body:
 
 ### Assumptions & Simplifations
 1. The validation dsl is very straight forward and only supports the following:
-  -`$eq` for equality of numbers and strings   
-  -`$gt`, `$gte`, `$lt`, `$lte` for comparing numbers
+  * `$eq` for equality of numbers and strings   
+  * `$gt`, `$gte`, `$lt`, `$lte` for comparing numbers
 2. Validations are self-contained and do not rely on external data.
 3. A validationSet to be used, it must be created prior to the creation of a FoodUnit.
 4. The identifier for the ValidationSet is the `productType` in the `FoodUnit`.
