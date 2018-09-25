@@ -15,7 +15,7 @@ class ValidationSetRoutesSpec(val bucket: Observable[AsyncBucket]) extends Route
 
   val repo = new ValidationSetRepo(bucket)
 
-  "ValidationSetRoute" should "insert and get" in {
+  "ValidationSetRoute" should "insert and get a ValidationSet" in {
 
     val validationSet = ValidationSet(ValidationSetId("carrots"), List( FoodUnitValidation(NumericEq("manufactureId", 12345)), FoodUnitValidation(StringEq("kind", "orange"))))
 
