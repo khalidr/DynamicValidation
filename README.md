@@ -30,7 +30,7 @@ Here is an example of what a `ValidationSet` may look like:
 
 So we are saying that the `CuppingScore` must be greater than 1 and the `treeVariety` must be `Arabica`.  You can have any number of validations and they will all get executed.
 
-Now if a user submits a `FoodUnit` json object with `productType` equal to `coffee`, the above validations will be run.  Here is an example:
+Now if a user submits a `FoodUnit` json object with `productType` equal to `coffee`, the above validations will be run.  For example:
 
 ```
 {
@@ -45,10 +45,11 @@ Now if a user submits a `FoodUnit` json object with `productType` equal to `coff
   }
 }
 ```
+This json would pass validation.
 
 **Note that only the json fields in the `attributes` element will be validated.**
 
-If there were errors during creation, they will be returned to the user. Otherwise, the `FoodUnit` will be created and the associated `id` will be returned.
+If there were errors during creation, they will be returned to the user. Otherwise, the `FoodUnit` will be created and the generated `id` will be returned.
 
 
 Here is an overview of the sequence of steps that occur during a create:
