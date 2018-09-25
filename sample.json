@@ -2,13 +2,13 @@
   "id": "somefood",
   "validations": [
     {
-      "targetAttribute": "/foo/bar",
+      "targetAttribute": "bar",
       "validation": {
         "$gte": 1
       }
     },
     {
-      "targetAttribute": "/foo/bar/baz",
+      "targetAttribute": "baz",
       "validation": {
         "$eq": 1
       }
