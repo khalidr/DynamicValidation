@@ -27,7 +27,7 @@ Here is an example of what a `ValidationSet` may look like:
 }
 ```
 
-It says that the `CuppingScore` must be greater than 1 and the `treeVariety` must be `Arabica`.  You can have any number of validations and they will all get executed.
+It says that the `CuppingScore` must be greater than 1 and the `treeVariety` must be `Arabica`.  You can have any number of validations and they will all be applied.
 
 Now if a user submits a `FoodUnit` json object with `productType` equal to `coffee`, the above validations will be run.  For example:
 
