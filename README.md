@@ -117,7 +117,7 @@ Body:
 
 `GET /food-units/<id>/locations` - get a list of all locations for a `FoodUnit`
 
-`GET /food-units/<id>/locations?maxResult=<max>` - get a list of locations with `<max>` results.  The list is in descending order by `createdDate` so to see the latest, set `<max>` to 1.
+`GET /food-units/<id>/locations?maxResult=<max>` - get a list of locations with `<max>` results.  The list is in descending order sorted by `createdDate` so to see the latest, set `<max>` to 1.
 
 `POST /food-units/<id>/locations` - add a new Location 
 
