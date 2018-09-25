@@ -129,7 +129,6 @@ Body:
 }
 ```
 
-
 ### Technologies Used
 - Akka Http
 - Couchbase (because I had all the code already :-) )
@@ -137,13 +136,13 @@ Body:
 - ScalaTest
 
 ### Assumptions & Simplifations
-1. The validation dsl is very basic and only supports the following:
-   *`$eq` for equality of numbers and strings   
-   *`$gt`, `$gte`, `$lt`, `$lte` for comparing numbers
-2. Validations are self-contained and do not rely on external data.
-3. A validationSet to be used, it must be created prior to the creation of a FoodUnit.
-4. The identifier for the ValidationSet is the `productType` in the `FoodUnit`.
-5. Nested expressions are not supported.
+* The validation dsl is very basic and only supports the following:
+  * `$eq` for equality of numbers and strings   
+  * `$gt`, `$gte`, `$lt`, `$lte` for comparing numbers
+* Validations are self-contained and do not rely on external data.
+* A validationSet to be used, it must be created prior to the creation of a FoodUnit.
+* The identifier for the ValidationSet is the `productType` in the `FoodUnit`.
+* Nested expressions are not supported.
 
 ### How to Run the Tests
 ```
