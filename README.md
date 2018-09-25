@@ -120,6 +120,14 @@ Body:
 `GET /food-units/<id>/locations?maxResult=<max>` - get a list of locations with `<max>` results.  The list is in descending order sorted by `createdDate` so to see the latest, set `<max>` to 1.
 
 `POST /food-units/<id>/locations` - add a new Location 
+Body:
+```
+{
+ "longitude":34.1,
+ "latitude":45.2,
+ "createdDate": "2018-09-25T17:59:43.188Z" //optional. Defaults to now
+}
+```
 
 
 ### Technologies Used
