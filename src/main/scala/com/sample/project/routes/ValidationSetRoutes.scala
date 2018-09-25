@@ -6,8 +6,9 @@ import akka.http.scaladsl.server.{PathMatcher, PathMatcher1, Route}
 import com.sample.project.domain.{ValidationSet, ValidationSetId}
 import com.sample.project.repo.ValidationSetRepo
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport
+import play.api.libs.json.Json
 
-trait ValidationSetRoute extends PlayJsonSupport {
+trait ValidationSetRoutes extends PlayJsonSupport {
 
   def validationSetRoute(validationSetRepo: ValidationSetRepo): Route = {
     pathPrefix("validations") {
@@ -15,7 +16,7 @@ trait ValidationSetRoute extends PlayJsonSupport {
         (post & entity(as[ValidationSet])) { validations ⇒
           onSuccess(validationSetRepo.get(validations.id)) {
             case Some(_) ⇒ complete(Conflict)
-            case None ⇒ onSuccess(validationSetRepo.insert(validations)) { _ ⇒ complete(Created) }
+            case None ⇒ onSuccess(validationSetRepo.insert(validations)) { inserted ⇒ complete(Created, Json.obj("id" → inserted.id.toString)) }
           }
         }
       } ~

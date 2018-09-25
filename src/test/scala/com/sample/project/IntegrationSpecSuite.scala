@@ -1,7 +1,7 @@
 package com.sample.project
 
 import com.sample.project.repo.FoodUnitRepoSpec
-import com.sample.project.routes.{FoodUnitRoutesSpec, ValidationSetRouteSpec}
+import com.sample.project.routes.{FoodUnitRoutesSpec, ValidationSetRoutesSpec}
 import org.scalatest.Suite
 
 class IntegrationSpecSuite extends SpecSuite {
@@ -15,6 +15,6 @@ class IntegrationSpecSuite extends SpecSuite {
     Vector(
       new FoodUnitRepoSpec(bucket),
       new FoodUnitRoutesSpec(bucket),
-      new ValidationSetRouteSpec(bucket)
+      new ValidationSetRoutesSpec(bucket)
     )
 }

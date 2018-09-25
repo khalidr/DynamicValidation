@@ -4,7 +4,9 @@ import java.time.{ZoneOffset, ZonedDateTime}
 import java.util.UUID
 
 import com.sample.project.repo.{IdWrites, Identifiable}
-import play.api.libs.json.{JsValue, Json, OFormat}
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
+import play.api.libs.json.Reads._
 
 case class FoodId(value: String = UUID.randomUUID().toString) {
   override def toString: String = value
@@ -19,7 +21,16 @@ object FoodId {
 case class Location(longitude: Double, latitude: Double, createdDate:ZonedDateTime = ZonedDateTime.now(ZoneOffset.UTC)) // normally I'd use something like squants to properly represent a measurement with the proper units
 
 object Location {
-  implicit val formats:OFormat[Location] = Json.format[Location]
+  implicit val reads: Reads[Location] =
+  {
+    (
+      (__ \ "longitude").read[Double] ~
+        (__ \ "latitude").read[Double] ~
+        (__ \ "createdDate").readNullable[ZonedDateTime].map(_.getOrElse(ZonedDateTime.now(ZoneOffset.UTC)))
+      )(Location.apply _)
+  }
+
+  implicit val writes:Writes[Location] = Json.writes[Location]
 }
 
 case class FoodUnit(owner: String,
@@ -34,6 +45,19 @@ case class FoodUnit(owner: String,
 
 object FoodUnit {
   implicit val formats: OFormat[FoodUnit] = Json.format[FoodUnit]
+
+  val createReads:Reads[FoodUnit] =
+    (
+      (__ \ "owner").read[String] ~
+      (__ \ "productType").read[String] ~
+      (__ \ "unitDescription").read[String] ~
+      (__ \ "mass").read[Double] ~
+      (__ \ "expiryDate").read[ZonedDateTime] ~
+      (__ \ "attributes").readNullable[JsObject].map(opt ⇒ opt.toList.flatMap(_.value).toMap) ~
+      (__ \ "locations").readNullable[Seq[Location]].map(_.toSeq.flatten) ~
+      (__ \ "createdDate").readNullable[ZonedDateTime].map(_.getOrElse(ZonedDateTime.now(ZoneOffset.UTC))) ~
+      (__ \ "id").readNullable[FoodId].map(_.getOrElse(FoodId()))
+    )(FoodUnit.apply _)
 
 }
 

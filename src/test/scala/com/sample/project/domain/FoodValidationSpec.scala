@@ -1,10 +1,12 @@
 package com.sample.project.domain
 
+import java.time.{ZoneOffset, ZonedDateTime}
+
 import cats.data.Validated.Invalid
 import cats.syntax.validated._
 import com.sample.project.UnitSpec
-import com.sample.project.domain.Logic.NumericEq
-import play.api.libs.json.Json
+import com.sample.project.domain.Logic.{NumericEq, NumericGreaterThan, NumericLessThanEq, StringEq}
+import play.api.libs.json.{JsNumber, JsString, Json}
 
 class FoodValidationSpec extends UnitSpec {
 
@@ -33,5 +35,24 @@ class FoodValidationSpec extends UnitSpec {
 
 
     Json.toJson(validation) shouldBe expectedJson
+  }
+
+  it should "work" in {
+
+    val json = Json.obj(
+      "owner" → "delmonte",
+      "productType" → "carrots",
+      "unitDescription" → "carrots",
+      "mass" →  1.1,
+      "expiryDate" → "2018-09-25T03:45:49.788Z",
+      "createdDate" → "2018-09-25T03:45:49.788Z",
+      "manufactorId" → 12345,
+      "kind" → "orange"
+    )
+
+
+    println(Json.fromJson[FoodUnit](json))
+
+
   }
 }

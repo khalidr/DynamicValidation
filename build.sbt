@@ -17,7 +17,9 @@ libraryDependencies ++= {
     "de.heikoseeberger" %% "akka-http-play-json" % "1.21.0",
     "org.scalatest" %% "scalatest" % "3.0.5" % Test,
     "com.typesafe.akka" %% "akka-http-testkit" % "10.1.5" % Test,
-    "org.typelevel" %% "cats-core" % "1.4.0"
+    "org.typelevel" %% "cats-core" % "1.4.0",
+    "ch.qos.logback" % "logback-classic" % "1.2.3"
+
 
 
   )

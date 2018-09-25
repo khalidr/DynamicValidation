@@ -11,7 +11,7 @@ import akka.http.scaladsl.model.StatusCodes._
 
 
 @DoNotDiscover
-class ValidationSetRouteSpec(val bucket: Observable[AsyncBucket]) extends RouteSpec with ValidationSetRoute {
+class ValidationSetRoutesSpec(val bucket: Observable[AsyncBucket]) extends RouteSpec with ValidationSetRoutes {
 
   val repo = new ValidationSetRepo(bucket)
 

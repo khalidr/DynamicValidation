@@ -10,10 +10,11 @@ import com.sample.project.domain._
 import com.sample.project.repo.{FoodUnitRepo, ValidationSetRepo}
 import com.sample.project.services.FoodUnitValidator
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport
+import play.api.libs.json.{Json, Reads}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-//@formatter:off
+
 trait FoodUnitRoutes extends PlayJsonSupport {
 
   def foodUnitRoutes(foodUnitRepo: FoodUnitRepo, validationSetRepo: ValidationSetRepo)(implicit ec:ExecutionContext): Route =
@@ -26,22 +27,27 @@ trait FoodUnitRoutes extends PlayJsonSupport {
 
     pathPrefix("food-units") {
       pathEndOrSingleSlash {
-        (post & entity(as[FoodUnit])) { foodUnit ⇒
+        post {
+          implicit val createReads: Reads[FoodUnit] = FoodUnit.createReads
+          entity(as[FoodUnit]) { foodUnit ⇒
             onSuccess(
               {
-                  for {
-                    validations ← validationSetRepo.get(ValidationSetId(foodUnit.productType))
+                for {
+                  validations ← validationSetRepo.get(ValidationSetId(foodUnit.productType))
                   validationResults ← Future.successful(FoodUnitValidator(foodUnit.attributes, validations.toList.flatMap(_.validations)))
                   r ←
                     if (validationResults.isValid)
-                      foodUnitRepo.insert(foodUnit).map(_ ⇒ ().validNel)
-                    else Future.successful(validationResults)
-                } yield r.toEither
+                      foodUnitRepo.insert(foodUnit).map(foodUnit ⇒ Some(foodUnit.id) → ().asRight)
+                    else Future.successful(None → validationResults.toEither)
+                } yield r
               }
-            ){
-              case Right(_) ⇒ complete(Created)
-              case Left(errors) ⇒ complete(BadRequest, errors.toList )}
+            ) {
+              case (Some(id), _) ⇒ complete(Created, Json.obj("id" → id.toString))
+              case (None, Left(errors)) ⇒ complete(BadRequest, errors.toList)
+              case (None, _) ⇒ complete(InternalServerError, "something went wrong") //should never happen
             }
+          }
+        }
       } ~
       pathPrefix(FoodIdMatcher) {foodId ⇒
         pathEndOrSingleSlash {
