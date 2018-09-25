@@ -44,7 +44,7 @@ Now if a user submits a `FoodUnit` json object with `productType` equal to `coff
   }
 }
 ```
-This json would pass validation.
+would cresult in the creation of a new `FoodUnit`.
 
 **Note that only the json fields in the `attributes` element will be validated.**
 
