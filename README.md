@@ -3,7 +3,7 @@
 
 ## Architectural Overview
 
-The system allows users to create a rule set in Json, to be applied to a sequence of arbitrary attributes that appear on a Food Unit. The `ValidationSet` must be created first, where the `id` is the `productType`
+The system allows users to create a set of validations in json, to be applied to a sequence of arbitrary attributes that appear on a Food Unit. The `ValidationSet` must be created first, where the `id` is the `productType`
 that the validations need to be applied to.
 
 Here is an example of what a `ValidationSet` may look like:
