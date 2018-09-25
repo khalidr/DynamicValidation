@@ -108,7 +108,7 @@ Body:
 }
 ```
 
-`PUT /food-units/<id>` - With `FoodUnit` json payload.
+`PUT /food-units/<id>` - upsert `FoodUnit`.
 
 `GET /food-units/<id>`
 
