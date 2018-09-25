@@ -50,7 +50,6 @@ would cresult in the creation of a new `FoodUnit`.
 
 If there were errors during creation, they will be returned to the user. Otherwise, the `FoodUnit` will be created and the generated `id` will be returned.
 
-
 Here is an overview of the sequence of steps that occur during a create:
 
 ![Validation Flow](Validation%20Flow.png "Creation Flow")
@@ -140,7 +139,7 @@ Body:
   * `$eq` for equality of numbers and strings   
   * `$gt`, `$gte`, `$lt`, `$lte` for comparing numbers
 * Validations are self-contained and do not rely on external data.
-* A validationSet to be used, it must be created prior to the creation of a FoodUnit.
+* A `ValidationSet` must be created prior to the creation of a FoodUnit.
 * The identifier for the ValidationSet is the `productType` in the `FoodUnit`.
 * Nested expressions are not supported.
 
