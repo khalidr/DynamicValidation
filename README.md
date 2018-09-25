@@ -1,7 +1,7 @@
 
 # Motiion Take-Home Assignment
 
-##Architectural Overview
+## Architectural Overview
 
 The system allows users to create a rule set in Json, to be applied to a sequence of arbitrary attributes that appear on a Food Unit. The `ValidationSet` must be created first, where the `id` is the `productType`
 that the validations need to be applied to.
@@ -53,16 +53,12 @@ If there were errors during creation, they will be returned to the user. Otherwi
 
 Here is an overview of the sequence of steps that occur during a create:
 
-![Validation Flow](Validation%20Flow.png)
+![Validation Flow](Validation%20Flow.png "Creation Flow")
 
 ## Rest Endpoints
-
-###ValidationSet
-####Get the `ValidationSet`
+### Validations
 `GET /validations`
 
-
-####Create a `ValidationSet`
 `POST /validations`
 
 Body:
@@ -86,10 +82,9 @@ Body:
     }
 ```
 
-####Delete a `ValidationSet`
 `DELETE /validations/<id>`
 
-###FoodUnit
+### FoodUnit
 
 `POST /food-units`
 
@@ -120,7 +115,7 @@ With `FoodUnit` json payload.
 
 `DELETE /food-units/<id>`
 
-###FoodUnit Locations
+### FoodUnit Locations
 
 `GET /food-units/<id>/locations` - get a list of all locations for a `FoodUnit`
 
@@ -129,13 +124,13 @@ With `FoodUnit` json payload.
 `POST /food-units/<id>/locations` - add a new Location 
 
 
-###Technologies Used
+### Technologies Used
 - Akka Http
 - Couchbase (because I had all the code already :-) )
 - Cats - for its Validation api
 - ScalaTest
 
-###Assumptions & Simplifations
+### Assumptions & Simplifations
 1. The validation dsl is very straight forward and only supports the following:
   *`$eq` for equality of numbers and strings   
   *`$gt`, `$gte`, `$lt`, `$lte` for comparing numbers 
