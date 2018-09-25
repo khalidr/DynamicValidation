@@ -129,12 +129,13 @@ Body:
 - ScalaTest
 
 ### Assumptions & Simplifations
-1. The validation dsl is very straight forward and only supports the following:
+1. The validation dsl is very basic and only supports the following:
    *`$eq` for equality of numbers and strings   
    *`$gt`, `$gte`, `$lt`, `$lte` for comparing numbers
 2. Validations are self-contained and do not rely on external data.
 3. A validationSet to be used, it must be created prior to the creation of a FoodUnit.
 4. The identifier for the ValidationSet is the `productType` in the `FoodUnit`.
+5. Nested expressions are not supported.
 
 ### How to Run the Tests
 ```
@@ -151,6 +152,6 @@ Body:
 ### Next Steps
 If this were a real project and assuming that my assumptions are valid, I would do a few things:
 1. Expand the DSL to contain a richer set of expressions.  For example, we would want logical operations and to be able to support nexted expressions.
-2. Investigate some other alternatives that would allow us to express rules dynamically.  Some candidates would be a templating framework like FreeMarker or even vanilla JavaScript.
+2. Investigate some other alternatives that would allow us to express validation rules dynamically.  Some candidates would be a templating framework like FreeMarker or even vanilla JavaScript.
 3. 
 
