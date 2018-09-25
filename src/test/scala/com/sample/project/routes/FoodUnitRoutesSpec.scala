@@ -7,7 +7,7 @@ import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Route
 import com.couchbase.client.java.AsyncBucket
 import com.sample.project.RouteSpec
-import com.sample.project.domain.Logic.{NumericEq, NumericGreaterThan, NumericLessThanEq, StringEq}
+import com.sample.project.domain.Expression.{NumericEq, NumericGreaterThan, NumericLessThanEq, StringEq}
 import com.sample.project.domain._
 import com.sample.project.repo.{FoodUnitRepo, ValidationSetRepo}
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport

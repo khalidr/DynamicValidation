@@ -6,33 +6,33 @@ import com.sample.project.repo.{IdWrites, Identifiable}
 import play.api.libs.json.Reads._
 import play.api.libs.json._
 import Operation._
-import com.sample.project.domain.Logic.ValidationResult
+import com.sample.project.domain.Expression.ValidationResult
 
-sealed trait Logic {
-  type A //PUNT!! There is probably an easier way to do this.  This Generic should be at the trait level
+sealed trait Expression {
+  type A
   implicit def operandWrites:Writes[A]
 
   def attributeName:String
   def operand:A
   def operation:Operation
-  def value(input:Map[String, JsValue]): ValidationResult
+  def execute(input:Map[String, JsValue]): ValidationResult
 
   def operandJson: JsValue = operandWrites.writes(operand)
 
-  def apply(input: Map[String, JsValue]):ValidationResult = value(input)
+  def apply(input: Map[String, JsValue]):ValidationResult = execute(input)
 }
 
-object Logic {
+object Expression {
 
   type ValidationResult = ValidatedNel[ValidationError, Unit]
 
 
   private def extractValue[A:Reads](attributeName:String, input:Map[String, JsValue]):JsResult[A] = input.get(attributeName).map(_.validate[A]).getOrElse(JsError(s"Attribute '$attributeName' not found"))
 
-  def validate[A:Reads](attributeName:String, operand:A, operation:Operation, input:Map[String, JsValue], isValid: A ⇒ Boolean):ValidatedNel[ValidationError, Unit] = {
+  def validate[A:Reads](attributeName:String, operand:A, operation:Operation, input:Map[String, JsValue], check: A ⇒ Boolean):ValidationResult = {
     val result =  for {
       attrVal ← extractValue[A](attributeName, input)
-      validated ←  JsSuccess(if(isValid(attrVal)) ().validNel else ValidationError(s"Attribute '$attributeName' with value $attrVal was not '${operation.value}' $operand").invalidNel)
+      validated ←  JsSuccess(if(check(attrVal)) ().validNel else ValidationError(s"Attribute '$attributeName' with value $attrVal was not '${operation.value}' $operand").invalidNel)
     }yield validated
 
 
@@ -43,50 +43,50 @@ object Logic {
   }
 
 
-  case class StringEq(attributeName:String, operand:String) extends Logic {
+  case class StringEq(attributeName:String, operand:String) extends Expression {
     type A = String
     val operandWrites: Writes[String] = implicitly[Writes[A]] //we really shouldn't need to do this but just going to hack for now
     val operation: Operation = Operation.$eq
 
-    def value(input: Map[String, JsValue]): ValidationResult= validate[A](attributeName, operand, operation, input, { attrValue:String ⇒ attrValue == operand})
+    def execute(input: Map[String, JsValue]): ValidationResult= validate[A](attributeName, operand, operation, input, { attrValue:String ⇒ attrValue == operand})
   }
 
-  case class NumericEq(attributeName:String, operand: BigDecimal) extends Logic {
+  case class NumericEq(attributeName:String, operand: BigDecimal) extends Expression {
     type A = BigDecimal
     val operandWrites: Writes[A] = implicitly[Writes[A]]
     val operation: Operation = Operation.$eq
-    def value(input: Map[String, JsValue]): ValidationResult = validate[A](attributeName, operand, operation, input, {attrValue:BigDecimal ⇒ attrValue == operand})
+    def execute(input: Map[String, JsValue]): ValidationResult = validate[A](attributeName, operand, operation, input, { attrValue:BigDecimal ⇒ attrValue == operand})
   }
 
-  case class NumericGreaterThan(attributeName:String, operand: BigDecimal) extends Logic {
+  case class NumericGreaterThan(attributeName:String, operand: BigDecimal) extends Expression {
     type A = BigDecimal
     val operandWrites: Writes[A] = implicitly[Writes[A]]
     val operation: Operation = $gt
-    def value(input: Map[String, JsValue]): ValidationResult = validate[A](attributeName, operand, operation, input, {attrValue:BigDecimal ⇒ attrValue > operand})
+    def execute(input: Map[String, JsValue]): ValidationResult = validate[A](attributeName, operand, operation, input, { attrValue:BigDecimal ⇒ attrValue > operand})
   }
 
-  case class NumericLessThan(attributeName:String, operand: BigDecimal) extends Logic {
+  case class NumericLessThan(attributeName:String, operand: BigDecimal) extends Expression {
     type A = BigDecimal
     val operandWrites: Writes[A] = implicitly[Writes[A]]
     val operation: Operation = $lt
-    def value(input: Map[String, JsValue]): ValidationResult = validate[A](attributeName, operand, operation, input, {attrValue:BigDecimal ⇒ attrValue < operand})
+    def execute(input: Map[String, JsValue]): ValidationResult = validate[A](attributeName, operand, operation, input, { attrValue:BigDecimal ⇒ attrValue < operand})
   }
 
-  case class NumericGreaterThanEq(attributeName:String, operand: BigDecimal) extends Logic {
+  case class NumericGreaterThanEq(attributeName:String, operand: BigDecimal) extends Expression {
     type A = BigDecimal
     val operandWrites: Writes[A] = implicitly[Writes[A]]
     val operation: Operation = $gte
-    def value(input: Map[String, JsValue]): ValidationResult = validate[A](attributeName, operand, operation, input, {attrValue:BigDecimal ⇒ attrValue >= operand})
+    def execute(input: Map[String, JsValue]): ValidationResult = validate[A](attributeName, operand, operation, input, { attrValue:BigDecimal ⇒ attrValue >= operand})
   }
 
-  case class NumericLessThanEq(attributeName:String, operand: BigDecimal) extends Logic {
+  case class NumericLessThanEq(attributeName:String, operand: BigDecimal) extends Expression {
     type A = BigDecimal
     val operandWrites: Writes[A] = implicitly[Writes[A]]
     val operation: Operation = $lte
-    def value(input: Map[String, JsValue]): ValidationResult = validate[A](attributeName, operand, operation, input, {attrValue:BigDecimal ⇒ attrValue <= operand})
+    def execute(input: Map[String, JsValue]): ValidationResult = validate[A](attributeName, operand, operation, input, { attrValue:BigDecimal ⇒ attrValue <= operand})
   }
 
-  def parseLogic[A](target:String, jsValue: JsValue):JsResult[Logic] =
+  def parseLogic[A](target:String, jsValue: JsValue):JsResult[Expression] =
 
     for {
       jsObj ← jsValue.validate[JsObject]
@@ -102,10 +102,10 @@ object Logic {
     } yield logic
 
 
-  def reads(targetAttribute:String):Reads[Logic] = Reads {json ⇒ parseLogic(targetAttribute, json)}
+  def reads(targetAttribute:String):Reads[Expression] = Reads { json ⇒ parseLogic(targetAttribute, json)}
 }
 
-case class FoodUnitValidation(logic:Logic)
+case class FoodUnitValidation(logic:Expression)
 
 object FoodUnitValidation {
 
@@ -114,8 +114,8 @@ object FoodUnitValidation {
       for {
         attr ← (json \ "targetAttribute").validate[String]
         logic ← {
-          implicit val reads: Reads[Logic] = Logic.reads(attr)
-          (json \ "validation").validate[Logic]
+          implicit val reads: Reads[Expression] = Expression.reads(attr)
+          (json \ "validation").validate[Expression]
         }
       } yield FoodUnitValidation(logic)
 
@@ -127,7 +127,6 @@ object FoodUnitValidation {
       Json.obj(unit.logic.operation.value → Json.toJson(unit.logic.operandJson))
     })
   }
-
 }
 
 case class ValidationError(msg:String)

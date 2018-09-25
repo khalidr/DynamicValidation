@@ -1,12 +1,10 @@
 package com.sample.project.domain
 
-import java.time.{ZoneOffset, ZonedDateTime}
-
 import cats.data.Validated.Invalid
 import cats.syntax.validated._
 import com.sample.project.UnitSpec
-import com.sample.project.domain.Logic.{NumericEq, NumericGreaterThan, NumericLessThanEq, StringEq}
-import play.api.libs.json.{JsNumber, JsString, Json}
+import com.sample.project.domain.Expression.NumericEq
+import play.api.libs.json.Json
 
 class FoodValidationSpec extends UnitSpec {
 

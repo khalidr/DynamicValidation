@@ -18,7 +18,7 @@ object FoodId {
   implicit val formats: OFormat[FoodId] = Json.format[FoodId]
 }
 
-case class Location(longitude: Double, latitude: Double, createdDate:ZonedDateTime = ZonedDateTime.now(ZoneOffset.UTC)) // normally I'd use something like squants to properly represent a measurement with the proper units
+case class Location(longitude: Double, latitude: Double, createdDate:ZonedDateTime = ZonedDateTime.now(ZoneOffset.UTC)) // normally I'd use something like squants to represent a measurement with the proper units
 
 object Location {
   implicit val reads: Reads[Location] =

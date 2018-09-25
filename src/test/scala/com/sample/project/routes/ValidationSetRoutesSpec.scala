@@ -2,7 +2,7 @@ package com.sample.project.routes
 
 import com.couchbase.client.java.AsyncBucket
 import com.sample.project.RouteSpec
-import com.sample.project.domain.Logic.{NumericEq, StringEq}
+import com.sample.project.domain.Expression.{NumericEq, StringEq}
 import com.sample.project.domain.{FoodUnitValidation, ValidationSet, ValidationSetId}
 import com.sample.project.repo.ValidationSetRepo
 import org.scalatest.DoNotDiscover

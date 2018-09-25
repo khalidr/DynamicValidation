@@ -2,7 +2,7 @@ package com.sample.project.services
 
 import cats.implicits._
 import com.sample.project.domain.FoodUnitValidation
-import com.sample.project.domain.Logic.ValidationResult
+import com.sample.project.domain.Expression.ValidationResult
 import play.api.libs.json.JsValue
 
 object FoodUnitValidator {
