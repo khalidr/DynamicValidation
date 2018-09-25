@@ -1,10 +1,10 @@
 package com.sample.project.domain
 
 import cats.data.Validated.Invalid
-import com.sample.project.domain.Logic.NumericEq
-import com.sample.project.{UnitSpec, domain}
-import play.api.libs.json.Json
 import cats.syntax.validated._
+import com.sample.project.UnitSpec
+import com.sample.project.domain.Logic.NumericEq
+import play.api.libs.json.Json
 
 class FoodValidationSpec extends UnitSpec {
 
@@ -17,12 +17,21 @@ class FoodValidationSpec extends UnitSpec {
 
     val notEqualInput = Json.obj("foo" → 2, "bar" → 2)
 
-    val validation = validationJson.as[FoodUnitValidation[BigDecimal]]
+    val validation = validationJson.as[FoodUnitValidation]
     validation shouldBe FoodUnitValidation(NumericEq("foo", 1))
 
-    validation.logic(input.value.toMap) shouldBe 1.validNel[ValidationError]
+    validation.logic(input.value.toMap) shouldBe ().validNel[ValidationError]
 
     val result = validation.logic(notEqualInput.value.toMap)
-    result shouldBe a[Invalid[ValidationError]]
+    result shouldBe a[Invalid[_]]
+  }
+
+  it should "be serializable to json" in {
+    val validation = FoodUnitValidation(NumericEq("foo", 1))
+    val expectedJson = Json.obj("targetAttribute" → "foo",
+    "validation" → Json.obj("$eq" → 1))
+
+
+    Json.toJson(validation) shouldBe expectedJson
   }
 }
