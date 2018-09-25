@@ -57,7 +57,7 @@ Here is an overview of the sequence of steps that occur during a create:
 ![Validation Flow](Validation%20Flow.png "Creation Flow")
 
 ## Rest Endpoints
-### Validations
+### ValidationSetRoutes
 `GET /validations`
 
 `POST /validations`
@@ -85,7 +85,7 @@ Body:
 
 `DELETE /validations/<id>`
 
-### FoodUnit
+### FoodUnitRoutes
 
 `POST /food-units`
 
