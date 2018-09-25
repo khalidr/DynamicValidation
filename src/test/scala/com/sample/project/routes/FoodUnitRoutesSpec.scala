@@ -23,7 +23,7 @@ class FoodUnitRoutesSpec(val bucket: Observable[AsyncBucket]) extends RouteSpec 
 
   val rootUrl = "/food-units"
 
- /* "FoodUnitRoute" should "create a foodUnit that has no validation rules" in new Context {
+  "FoodUnitRoute" should "create a foodUnit that has no validation rules" in new Context {
     val unit: JsObject = Json.obj(
       "owner" → "delmonte",
       "productType" → "carrots",
@@ -37,11 +37,9 @@ class FoodUnitRoutesSpec(val bucket: Observable[AsyncBucket]) extends RouteSpec 
     )
     Post(rootUrl, unit) ~> route ~> check {
       status shouldBe Created
-      println(response)
       val id = (responseAs[JsObject] \ "id").as[String]
 
       Get(s"$rootUrl/$id") ~> route ~> check {
-        println(response)
         val expected = FoodUnit("delmonte", "carrots", "carrots", 1.1, ZonedDateTime.parse("2018-09-25T03:45:49.788Z"), createdDate = ZonedDateTime.parse("2018-09-25T03:45:49.788Z"), id = FoodId(id))
         responseAs[FoodUnit] shouldBe expected
       }
@@ -49,7 +47,6 @@ class FoodUnitRoutesSpec(val bucket: Observable[AsyncBucket]) extends RouteSpec 
       foodUnitRepo.delete(FoodId(id)).futureValue
     }
   }
-*/
   it should "add and get locations" in new Context {
 
     val locations = Seq(Location(100,100, ZonedDateTime.now(ZoneOffset.UTC).minusDays(2)))

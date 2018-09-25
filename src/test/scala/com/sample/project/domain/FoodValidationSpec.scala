@@ -34,23 +34,4 @@ class FoodValidationSpec extends UnitSpec {
 
     Json.toJson(validation) shouldBe expectedJson
   }
-
-  it should "work" in {
-
-    val json = Json.obj(
-      "owner" → "delmonte",
-      "productType" → "carrots",
-      "unitDescription" → "carrots",
-      "mass" →  1.1,
-      "expiryDate" → "2018-09-25T03:45:49.788Z",
-      "createdDate" → "2018-09-25T03:45:49.788Z",
-      "manufactorId" → 12345,
-      "kind" → "orange"
-    )
-
-
-    println(Json.fromJson[FoodUnit](json))
-
-
-  }
 }

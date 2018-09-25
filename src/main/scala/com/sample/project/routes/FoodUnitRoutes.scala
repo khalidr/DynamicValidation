@@ -72,7 +72,7 @@ trait FoodUnitRoutes extends PlayJsonSupport {
                 val sorted = foodUnit.locations.sortBy(_.createdDate)(zonedDateTimeOrdering)  //normally we'd offload this sorting to the database
                 complete(sorted.take(m.toInt))
 
-              case None ⇒ complete(foodUnit.locations)
+              case None ⇒ complete(foodUnit.locations.sortBy(_.createdDate)(zonedDateTimeOrdering))
             }
           }
         }
