@@ -145,7 +145,9 @@ Body:
 
 ### How to Run the Tests
 **Requires docker to be installed locally**
-Only couchbase runs in docker.  The subsequent `sbt` command will run the code locally.
+Only couchbase runs in docker.  
+
+The subsequent `sbt` command will run the code locally.
 
 From the command line:
 ```
