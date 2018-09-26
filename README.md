@@ -156,7 +156,7 @@ Body:
 ```
 
 ### Next Steps
-If this were a real project and assuming that my assumptions are valid, I would do a few things:
+If this were a real project and given my assumptions are valid, I would do a few things:
 1. Expand the DSL to contain a richer set of expressions.  For example, we would want logical operations and to be able to support nested expressions.
 2. Investigate some other alternatives that would allow us to express validation rules dynamically.  Some candidates would be a templating framework like FreeMarker or even vanilla JavaScript.
 3. An api that would build the ValidationSet based on a vendor's requirements.
