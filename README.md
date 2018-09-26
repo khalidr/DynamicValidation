@@ -134,7 +134,7 @@ Body:
 - Cats - for its Validation api
 - ScalaTest
 
-### Assumptions & Simplifations
+### Assumptions & Simplifications
 * The validation dsl is very basic and only supports the following:
   * `$eq` for equality of numbers and strings   
   * `$gt`, `$gte`, `$lt`, `$lte` for comparing numbers
