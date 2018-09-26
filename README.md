@@ -144,7 +144,7 @@ Body:
 * Nested expressions are not supported.
 
 ### How to Run the Tests
-**Only couchbase runs in docker. The subsequent `sbt` command will run the code locally.**
+**Only couchbase runs in docker. The subsequent `sbt` command will run the code locally and will use the couchbase instance running in docker.**
 
 From the command line:
 ```
