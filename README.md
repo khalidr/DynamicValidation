@@ -144,6 +144,9 @@ Body:
 * Nested expressions are not supported.
 
 ### How to Run the Tests
+**Requires docker to be installed locally**
+
+From the command line:
 ```
 >docker-compose up -d
 >sbt test
