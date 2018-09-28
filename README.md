@@ -1,5 +1,5 @@
 
-# Motiion Take-Home Assignment
+
 
 ## Architectural Overview
 
